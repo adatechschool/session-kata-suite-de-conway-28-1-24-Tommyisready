@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suite de Conway - Pyramide complète</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #282c34;
+        color: white;
+        flex-direction: column;
+      }
+      .conway-container {
+        text-align: center;
+        font-family: monospace; /* Police à espacement fixe pour alignement parfait */
+      }
+      .conway-line {
+        display: block;
+        white-space: pre; /* Permet de préserver les espaces pour l'alignement */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Suite de Conway - Pyramide complète</h1>
+    <div class="conway-container" id="conway"></div>
+
+    <script>
+      function decritChaine(chaine) {
+        if (chaine.length === 0) return "";
+        let resultat = "";
+        let compteur = 1;
+
+        for (let i = 1; i < chaine.length; i++) {
+          if (chaine[i] === chaine[i - 1]) {
+            compteur++;
+          } else {
+            resultat += compteur + chaine[i - 1];
+            compteur = 1;
+          }
+        }
+        resultat += compteur + chaine[chaine.length - 1];
+        return resultat;
+      }
+
+      function suiteConway(carac, n) {
+        let suite = [carac];
+        for (let i = 1; i < n; i++) {
+          suite.push(decritChaine(suite[i - 1]));
+        }
+        return suite;
+      }
+
+      function afficherSuiteConway(carac, n) {
+        const container = document.getElementById("conway");
+        container.innerHTML = ""; // On nettoie avant d'afficher
+        const suite = suiteConway(carac, n);
+
+        suite.forEach((ligne, index) => {
+          let div = document.createElement("div");
+          div.className = "conway-line";
+          div.textContent = ligne;
+          div.style.marginLeft = `${(suite.length - index) * 10}px`; // Décalage pour effet pyramide
+          container.appendChild(div);
+        });
+      }
+
+      afficherSuiteConway("1", 10); // Change le premier caractère et le nombre d'étapes ici
+    </script>
+  </body>
+</html>
